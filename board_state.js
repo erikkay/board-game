@@ -1,10 +1,7 @@
 var Board = function(size) {
-    const EMPTY_LEGAL_P1 = -1; 
-    const EMPTY_LEGAL_P2 = -2;
-    const EMPTY_LEGAL_BOTH = -3;
-    const EMPTY_ILLEGAL = 0;
-    const P1 = 1;
-    const P2 = 2;
+    this.EMPTY = 0;
+    this.P1 = 1;
+    this.P2 = 2;
     var adjacent_cache;
    
     this.index = function(x, y) { 
@@ -17,7 +14,7 @@ var Board = function(size) {
         this.size = size;
 	this.square_count = size * size;
 	this.board_array = new Uint8Array(this.square_count);
-	this.player = P1;
+	this.player = this.P1;
 	if (!adjacent_cache) {
 	    adjacent_cache = new Array(size * size);
 	    for (var x = 0; x < size; x++) {
@@ -49,7 +46,7 @@ var Board = function(size) {
 	    console.log("out of bounds", x, y, this.size);
 	    return;
 	}
-	if (val < EMPTY_LEGAL_BOTH || val > P2) {
+	if (val < this.EMPTY || val > this.P2) {
 	    console.log("illegal value", val);
 	    return;
 	}
@@ -57,7 +54,7 @@ var Board = function(size) {
     }
     
     // if one arg, x is treated as index
-    function get(x, y) {
+    this.get = function(x, y) {
         var i;
 	if (y == undefined)
 	    i = x;
@@ -73,11 +70,11 @@ var Board = function(size) {
     this.counts = function() {
 	var c = [0, 0, 0];
 	for (var i = 0; i < board_array.length; i++) {
-	    if (board_array[i] <= EMPTY_ILLEGAL)
+	    if (board_array[i] <= this.EMPTY)
 		c[0]++;
-	    else if (board_array[i] == P1)
+	    else if (board_array[i] == this.P1)
 		c[1]++;
-	    else if (board_array[i] == P2)
+	    else if (board_array[i] == this.P2)
 		c[2]++;
 	    else
 		console.log("illegal value in board", i, board_array[i]);
