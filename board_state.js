@@ -38,7 +38,11 @@ var Board = function(size) {
 	}
     }
 
-    this.data = function() { return board_array; }
+    this.data = function() { return this.board_array; }
+
+    this.set_data = function(ba) {
+	this.board_array = ba;
+    }
     
     this.set = function(x, y, val) {
 	var i = this.index(x, y);
@@ -83,7 +87,7 @@ var Board = function(size) {
     }
 
     this.currentPlayer = function() {
-	return player;
+	return this.player;
     }
 
     this.adjacent = function(x,y) {
