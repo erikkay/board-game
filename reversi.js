@@ -9,8 +9,27 @@ var Reversi = function() {
 	return this.board;
     }
 
-    function updateDisplay() {
-	
+    this.updateDisplay = function() {
+	var canvas = document.getElementById("board");
+	var ctx = canvas.getContext("2d");
+	var size = canvas.width / this.board.size;
+	console.log(canvas, ctx, canvas.width, canvas.height, this.board.size, size);
+	ctx.fillStyle = "red";
+	ctx.fillRect(0, 0, canvas.width, canvas.height);
+	ctx.beginPath();
+	for (var col = 1; col < 8; col++) {
+	    var x = col * size;
+	    ctx.moveTo(x, 0);
+	    ctx.lineTo(x, canvas.height);
+	    console.log(x, canvas.height);
+	}
+	for (var row = 1; row < 8; row++) {
+	    var y = row * size;
+	    ctx.moveTo(0, y);
+	    ctx.lineTo(canvas.width, y);
+	    console.log(canvas.width, y);
+	}
+	ctx.stroke();
     }
 
     function validMoves(b) {
@@ -48,3 +67,6 @@ var Reversi = function() {
 }
 
 var reversi_game = new Reversi();
+window.onload = function() {
+    reversi_game.updateDisplay();
+};

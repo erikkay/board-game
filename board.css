@@ -1,6 +1,16 @@
+html {
+}
+
 body {
   margin: 0px;
-  border-top: 1px solid gray;
-  font-family: arial;
-  background-color: light-yellow;
+  padding: 0px;
+  background-color: #EFEC9D;
+  height: 100%;
+  font-size: 36px;
+}
+
+#board {
+  margin: 0px;
+  padding: 0px;
+  display: block;
 }
