@@ -3,19 +3,36 @@ var Reversi = function() {
 	var valid = new Array();
 	var cur = b.currentPlayer();
 	var opp = cur == b.P1 ? b.P2 : b.P1;
+	log("cur",cur,"opp",opp);
 	for (var x = 0; x < b.size; x++) {
 	    for (var y = 0; y < b.size; y++) {
 		if (b.get(x, y) <= 0) {
-		    var adjacent = b.adjacent(x, y);
-		    for (var a in adjacent) {
-			log("adjacent", a, b.get(a));
-			if (b.get(a) == opp) {
-			    var delta = a - index(x, y);
-			    for (var next = a + delta; next < b.square_count; next += delta) {
-				if (b.get(next) == cur) {
-				    valid.push(a);
+		    var adjacent_list = b.adjacent(x, y);
+		    var candidate = b.index(x, y);
+		    for (var a = 0; a < adjacent_list.length; a++) {
+			var adjacent = adjacent_list[a];
+			if (b.get(adjacent) == opp) {
+			    var delta = adjacent - candidate;
+			    var next_x = (adjacent % b.size);
+			    var delta_x = next_x - x;
+			    var next_y = (adjacent / b.size) ^ 0;
+			    var delta_y = next_y - y;
+			    next_x += delta_x;
+			    next_y += delta_y;
+			    var next_index = b.index(next_x, next_y);
+			    while (next_index >= 0) {
+				log(candidate, next_index);
+				var next_val = b.get(next_index);
+				if (next_val == cur) {
+				    log("valid move", cur, candidate);
+				    valid.push(candidate);
+				    break;
+				} else if (next_val == b.EMPTY) {
 				    break;
 				}
+				next_x += delta_x;
+				next_y += delta_y;
+				next_index = b.index(next_x, next_y);
 			    }
 			}
 		    }

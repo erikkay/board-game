@@ -8,12 +8,12 @@ function center(width, height) {
 
 chrome.app.runtime.onLaunched.addListener(function() {
     var size = 400;
-    var title = 24; //29;
     var w = size;
-    var h = size + title;
+    var h = size;
     var pos = center(w, h);
     console.log(pos);
     chrome.app.window.create('board.html', {
+	id: 'initial board',
 	defaultLeft: pos[0],
 	defaultTop: pos[1],
 	width: w,

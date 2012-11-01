@@ -22,8 +22,9 @@ var Board = function(size) {
 		    var i = this.index(x, y);
 		    adjacent_cache[i] = new Array();
 		    var add_adjacent = function(a) {
-			if (a >= 0)
+			if (a >= 0 && a < adjacent_cache.length) {
 			    adjacent_cache[i].push(a);
+			}
 		    }
 		    add_adjacent(this.index(x - 1, y - 1));
 		    add_adjacent(this.index(x, y - 1));
