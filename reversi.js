@@ -41,6 +41,9 @@ var Reversi = function() {
 		}
 	    }
 	}
+	if (valid.length == 0) {
+	    //log("no valid moves");
+	}
 	return valid;
     }
 
