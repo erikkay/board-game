@@ -10,7 +10,20 @@ var Board = function(size) {
 	return x + y * this.size;
     }
 
+    this.doMove = function(begin_index, end_index, delta) {
+	var new_board = new Board(this.size);
+	for (var i = 0; i < this.square_count; i++) {
+	    new_board.board_array[i] = this.board_array[i];
+	}
+	for (var i = begin_index; i < end_index; i += delta) {
+	    new_board.board_array[i] = this.player;
+	}
+	new_board.player = this.opposingPlayer();
+	return new_board;
+    }    
+
     this.create = function(size) {
+	this.score = 0;
         this.size = size;
 	this.square_count = size * size;
 	this.board_array = new Uint8Array(this.square_count);
@@ -74,21 +87,25 @@ var Board = function(size) {
 
     this.counts = function() {
 	var c = [0, 0, 0];
-	for (var i = 0; i < board_array.length; i++) {
-	    if (board_array[i] <= this.EMPTY)
+	for (var i = 0; i < this.board_array.length; i++) {
+	    if (this.board_array[i] <= this.EMPTY)
 		c[0]++;
-	    else if (board_array[i] == this.P1)
+	    else if (this.board_array[i] == this.P1)
 		c[1]++;
-	    else if (board_array[i] == this.P2)
+	    else if (this.board_array[i] == this.P2)
 		c[2]++;
 	    else
-		console.log("illegal value in board", i, board_array[i]);
+		console.log("illegal value in board", i, this.board_array[i]);
 	}
 	return c;
     }
 
     this.currentPlayer = function() {
 	return this.player;
+    }
+
+    this.opposingPlayer = function() {
+	return this.player == this.P1 ? this.P2 : this.P1;
     }
 
     this.adjacent = function(x,y) {

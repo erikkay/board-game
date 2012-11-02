@@ -2,8 +2,7 @@ var Reversi = function() {
     this.validMoves = function(b) {
 	var valid = new Array();
 	var cur = b.currentPlayer();
-	var opp = cur == b.P1 ? b.P2 : b.P1;
-	log("cur",cur,"opp",opp);
+	var opp = b.opposingPlayer();
 	for (var x = 0; x < b.size; x++) {
 	    for (var y = 0; y < b.size; y++) {
 		if (b.get(x, y) <= 0) {
@@ -21,11 +20,13 @@ var Reversi = function() {
 			    next_y += delta_y;
 			    var next_index = b.index(next_x, next_y);
 			    while (next_index >= 0) {
-				log(candidate, next_index);
+				//log(candidate, next_index);
 				var next_val = b.get(next_index);
 				if (next_val == cur) {
-				    log("valid move", cur, candidate);
-				    valid.push(candidate);
+				    //log("valid move", cur, candidate);
+				    var next_board =
+					b.doMove(adjacent, next_index, delta);
+				    valid.push(next_board);
 				    break;
 				} else if (next_val == b.EMPTY) {
 				    break;
@@ -44,10 +45,11 @@ var Reversi = function() {
 
     this.score = function(b) {
 	var counts = b.counts();
-	if (b.currentPlayer == b.P1)
-	    return counts[1] - counts[2];
+	if (b.currentPlayer() == b.P1)
+	    b.score = counts[1] - counts[2];
 	else
-	    return counts[2] - counts[1];
+	    b.score = counts[2] - counts[1];
+	return b.score;
     }
 }
 

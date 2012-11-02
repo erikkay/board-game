@@ -50,7 +50,6 @@ function getSquare(x, y) {
 }
 
 window.addEventListener('load', function(e) {
-    console.log('window.load');
     board_canvas = document.getElementById("board");
     board_canvas.addEventListener('click', function(e) { 
 	square = getSquare(e.x, e.y);
