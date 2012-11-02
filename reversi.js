@@ -3,8 +3,9 @@ var Reversi = function() {
 	var valid = new Array();
 	var cur = b.currentPlayer();
 	var opp = b.opposingPlayer();
-	for (var x = 0; x < b.size; x++) {
-	    for (var y = 0; y < b.size; y++) {
+	var size = b.size();
+	for (var x = 0; x < size; x++) {
+	    for (var y = 0; y < size; y++) {
 		if (b.get(x, y) <= 0) {
 		    var adjacent_list = b.adjacent(x, y);
 		    var candidate = b.index(x, y);
@@ -12,9 +13,9 @@ var Reversi = function() {
 			var adjacent = adjacent_list[a];
 			if (b.get(adjacent) == opp) {
 			    var delta = adjacent - candidate;
-			    var next_x = (adjacent % b.size);
+			    var next_x = (adjacent % size);
 			    var delta_x = next_x - x;
-			    var next_y = (adjacent / b.size) ^ 0;
+			    var next_y = (adjacent / size) ^ 0;
 			    var delta_y = next_y - y;
 			    next_x += delta_x;
 			    next_y += delta_y;
@@ -25,7 +26,7 @@ var Reversi = function() {
 				if (next_val == cur) {
 				    //log("valid move", cur, candidate);
 				    var next_board =
-					b.doMove(adjacent, next_index, delta);
+					b.doMove(candidate, next_index, delta);
 				    valid.push(next_board);
 				    break;
 				} else if (next_val == b.EMPTY) {
@@ -46,10 +47,10 @@ var Reversi = function() {
     this.score = function(b) {
 	var counts = b.counts();
 	if (b.currentPlayer() == b.P1)
-	    b.score = counts[1] - counts[2];
+	    b.setScore(counts[1] - counts[2]);
 	else
-	    b.score = counts[2] - counts[1];
-	return b.score;
+	    b.setScore(counts[2] - counts[1]);
+	return b.score();
     }
 }
 

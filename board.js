@@ -3,7 +3,7 @@ var board_canvas;
 function updateDisplay(board) {
     var canvas = document.getElementById("board");
     var ctx = canvas.getContext("2d");
-    var size = canvas.width / board.size;
+    var size = canvas.width / board.size();
     ctx.fillStyle = "rgb(64,155,64)";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.beginPath();
@@ -19,9 +19,9 @@ function updateDisplay(board) {
     }
     ctx.stroke();
     var x = size / 2;
-    for (var col = 0; col < board.size; col++, x += size) {
+    for (var col = 0; col < board.size(); col++, x += size) {
 	var y = size / 2;
-	for (var row = 0; row < board.size; row++, y += size) {
+	for (var row = 0; row < board.size(); row++, y += size) {
 	    var p = board.get(col, row);
 	    if (p == board.EMPTY) {
 		continue;
@@ -53,6 +53,7 @@ window.addEventListener('load', function(e) {
     board_canvas = document.getElementById("board");
     board_canvas.addEventListener('click', function(e) { 
 	square = getSquare(e.x, e.y);
+	nextMove();
     }, false);
     board_canvas.addEventListener('mousemove', function(e) {
 	square = getSquare(e.x, e.y);

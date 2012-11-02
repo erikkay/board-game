@@ -5,10 +5,10 @@ var reversi = new Reversi();
 
 self.addEventListener('message', function(e) {
     var board = new Board(8);
-    board.set_data(e.data);
+    board.state = e.data;
     var ret = playMax(-Infinity, Infinity, board, 3);
-    log(ret.score);
-    self.postMessage(ret);
+    log(JSON.stringify(ret.state));
+    self.postMessage(ret.state);
 }, false);
 
 function log() {
@@ -29,11 +29,15 @@ function playMax(alpha,beta,board,depth){
     for (var i = 0; i < children.length; i++) {
         var child = children[i];
 	var minBoard = playMin(alpha,beta,child,depth-1);
-        value = Math.max(value, minBoard.score);
-        if(value > beta) break;
-        if(value > alpha) alpha = value;
+	var score = minBoard.score();
+	if (value < score) {
+            value = score;
+	    board = child;
+            if(value > beta) break;
+            if(value > alpha) alpha = value;
+	}
     }
-    board.score = value;
+    board.setScore(value);
     return board;
 }
 
@@ -47,11 +51,15 @@ function playMin(alpha,beta,board,depth){
     for (var i = 0; i < children.length; i++) {
         var child = children[i];
 	var maxBoard = playMax(alpha,beta,child,depth-1);
-        value = Math.min(value, maxBoard.score);
-        if(value < alpha) break;
-        if(value < beta) beta = value;
+	var score = maxBoard.score();
+	if (score < value) {
+            value = score;
+	    board = child;
+            if(value < alpha) break;
+            if(value < beta) beta = value;
+	}
     }
-    board.score = value;
+    board.setScore(value);
     return board;
 }
 
